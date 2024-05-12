@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Fetch historical stock data for Tata Motors
+# Fetching stock data for Tata Motors
 def fetch_stock_data(symbol, start_date, end_date):
     stock_data = yf.download(symbol, start=start_date, end=end_date)
     return stock_data['Close']
@@ -18,7 +18,7 @@ def calculate_10day_sma(closing_prices):
             sma_10day.append(sma)
     return sma_10day
 
-# Fetch historical data for Tata Motors
+# Fetching data for Tata Motors
 tata_motors_data = fetch_stock_data('TATAMOTORS.NS', '2023-04-01', '2024-03-31')
 
 # Calculate 20-day SMA using rolling function
