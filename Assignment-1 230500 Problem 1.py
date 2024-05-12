@@ -7,18 +7,18 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Fetch historical stock data
+# Fetching data
 def fetch_stock_data(symbol, start_date, end_date):
     stock_data = yf.download(symbol, start=start_date, end=end_date)
     return stock_data
 
-# Simulate trading strategy
+# defining function
 def simulate_trading_strategy(stock_data, initial_capital):
     # Initialize variables
     num_days = len(stock_data)
     capital = np.zeros(num_days)
     capital[0] = initial_capital
-    risk_free_return = 3 / 100  # Risk-free rate (3%)
+    risk_free_return = 2.5 / 100  # Risk-free rate 2.5%, as mentioned by prakhar in group
 
     # Calculate daily returns and capital over time
     for i in range(1, num_days):
@@ -27,7 +27,7 @@ def simulate_trading_strategy(stock_data, initial_capital):
         daily_return = ((close_price - open_price) / open_price) * 100
         capital[i] = capital[i-1] * (1 + daily_return / 100)  # Adjusting for percentage return
 
-    # Calculate metrics
+    # Calculations
     daily_returns = [(capital[i] / capital[i-1]) - 1 for i in range(1, num_days)]
     excess_returns = np.array(daily_returns) - risk_free_return
     avg_daily_return = np.mean(excess_returns)
@@ -38,18 +38,18 @@ def simulate_trading_strategy(stock_data, initial_capital):
 
     return final_capital, daily_returns, sharpe_ratio, max_drawdown, capital
 
-# Fetch historical data for HDFC Bank stock and NIFTY 50 index
+# Fetch data for HDFC Bank stock and NIFTY 50 index
 hdfc_bank_data = fetch_stock_data('HDFCBANK.NS', '2023-04-01', '2024-03-31')
 nifty_data = fetch_stock_data('^NSEI', '2023-04-01', '2024-03-31')
 
 # Initial capital for Alice
 initial_capital = 100000  
 
-# Simulate trading strategy for HDFC Bank stock
+# HDFC Bank stock
 hdfc_final_capital, hdfc_daily_returns, hdfc_sharpe_ratio, hdfc_max_drawdown, hdfc_capital = \
     simulate_trading_strategy(hdfc_bank_data, initial_capital)
 
-# Simulate trading strategy for NIFTY 50 index
+# NIFTY 50 index
 nifty_final_capital, nifty_daily_returns, nifty_sharpe_ratio, nifty_max_drawdown, nifty_capital = \
     simulate_trading_strategy(nifty_data, initial_capital)
 
